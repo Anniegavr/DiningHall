@@ -1,4 +1,5 @@
 package main
+
 import (
 	"bytes"
 	"encoding/json"
@@ -23,29 +24,30 @@ type CookingDetails struct {
 }
 
 type Order struct {
-	OrderId       int    `json:"id"`
-	TableId       int `json:"table_id"`
-	WaiterId       int `json:"table_id"`
+	OrderId  int   `json:"id"`
+	TableId  int   `json:"table_id"`
+	WaiterId int   `json:"table_id"`
 	Items    []int `json:"items"`
-	Priority int    `json:"priority"`
-	MaxWait  int    `json:"maxWait"`
-	PickTime int `json:"pick_time"`
+	Priority int   `json:"priority"`
+	MaxWait  int   `json:"maxWait"`
+	PickTime int   `json:"pick_time"`
 }
 
 type OrderDistribution struct {
-	OrderId   int `json:"order_id"`
-	TableId   int `json:"table_id"`
-	Waiter_id int `json:"waiter_id"`
-	Items           []int                  `json:"items"`
-	Priority     int `json:"priority"`
-	MaxWait      int `json:"max_wait"`
-	PickUpTime      int                    `json:"pick_up_time"`
+	OrderId        int              `json:"order_id"`
+	TableId        int              `json:"table_id"`
+	Waiter_id      int              `json:"waiter_id"`
+	Items          []int            `json:"items"`
+	Priority       int              `json:"priority"`
+	MaxWait        int              `json:"max_wait"`
+	PickUpTime     int              `json:"pick_up_time"`
 	CookingTime    int              `json:"cooking_time"`
 	CookingDetails []CookingDetails `json:"cooking_details"`
 }
 
 type Menu []MenuItem
 type OrdersList []Order
+
 var orderIdentif = 0
 
 func sendOrder() {
