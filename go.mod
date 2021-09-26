@@ -1,4 +1,4 @@
-module github.com/Anniegavr/Lobby
+module github.com/Anniegavr/DHall
 
 go 1.16
 
