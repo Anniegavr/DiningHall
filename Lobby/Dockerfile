@@ -1,9 +1,10 @@
-FROM docker.io/library/golang:latest
+FROM golang:1.16-alpine
 RUN mkdir /new
 WORKDIR /new
-RUN export GO111MODULE=on
-RUN go get github.com/Anniegavr/Lobby/Lobby/main
-RUN cd /new && git clone https://github.com/Anniegavr/Lobby
-RUN cd /new/Lobby/Lobby/main && go build
+COPY go.mod ./
+COPY go.sum ./
+RUN go mod download
+COPY *.go ./
+RUN go build -o /dininghall
 EXPOSE 8081
-ENTRYPOINT "/new/Lobby/Lobby/main/main"
+CMD ["/dininghall"]

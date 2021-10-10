@@ -1,4 +1,4 @@
-module github.com/Anniegavr/gLobby/Lobby
+module github.com/Anniegavr/Lobby/Lobby
 
 go 1.16
 
