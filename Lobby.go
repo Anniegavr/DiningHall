@@ -45,6 +45,28 @@ type OrderDistribution struct {
 	CookingDetails []CookingDetails `json:"cooking_details"`
 }
 
+//type TableIdCounter struct {
+//	id int
+//}
+//func New() *TableIdCounter {
+//	return &TableIdCounter{
+//		id: 0,
+//	}
+//}
+//
+//func (counter *TableIdCounter) getIdRef() *int {
+//	return &counter.id
+//}
+//
+//func (counter *TableIdCounter) Get() int {
+//	idRef := counter.getIdRef()
+//	defer func() {
+//		*idRef++
+//	}()
+//
+//	return *idRef
+//}
+
 type Menu []MenuItem
 type OrdersList []Order
 
@@ -69,7 +91,7 @@ func sendOrder() {
 		log.Fatal(err)
 	}
 	fmt.Print(time.Now().Clock())
-	fmt.Printf(": Order number %d placed. Status: %d\n", orderIdentif, resp.StatusCode)
+	fmt.Printf(": Order number %d placed. TableStatus: %d\n", orderIdentif, resp.StatusCode)
 }
 
 func generateOrder() {
