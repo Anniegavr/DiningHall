@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"github.com/Anniegavr/Lobby/Lobby/item"
 	"github.com/Anniegavr/Lobby/Lobby/utils"
 	"math/rand"
@@ -27,6 +28,7 @@ type Table struct {
 	manager *TableIdCounter
 	menu    *item.Container
 	conf    *Configuration
+	rate *RatingSystem
 }
 func NewTable(
 	id int,
@@ -65,7 +67,7 @@ func (table *Table) StartOrdering() error {
 	table.mutex.Lock()
 
 	if table.status != Ordering {
-		return errors.New("Can't place order")
+		return errors.New("can't place order")
 	}
 	table.status = Waiting
 
@@ -86,11 +88,13 @@ func (table *Table) FinishOrdering(waiterId int) (*utils.OrderData, error) {
 		index := rand.Intn(menuLen)
 		tab, ok := table.menu.Get(index)
 		if ok != true {
-			return nil, errors.New("Outbounded array index")
+			return nil, errors.New("outbound array index")
 		}
 
 		items[i] = tab.Id
-		maxWait += tab.PreparationTime
+		if maxWait < tab.PreparationTime{
+			maxWait = tab.PreparationTime
+		}
 	}
 
 	finalMaxWait := float32(maxWait) * table.conf.MaxWaitMultiplier
@@ -109,12 +113,23 @@ func (table *Table) FinishOrdering(waiterId int) (*utils.OrderData, error) {
 	return order, nil
 }
 
+
 func (table *Table) GetOrder(dist *utils.DistributionData) {
 	<-table.orderStatus
 
-	// TODO: Calculate note
+	now := time.Now().Unix()
+	rating := Calculate(dist.PickUpTime, now, dist.MaxWait)
+
+	fmt.Printf("%s = %d\n", "Rating order", rating)
+
+	table.rate.Add(rating)
+
+	fmt.Printf("%s = %f\n", "Rating overall", table.rate.Return())
 }
 
+func (table *Table) SetRatingSystem(rate *RatingSystem) {
+	table.rate = rate
+}
 
 func (table *Table) update() {
 	table.free()

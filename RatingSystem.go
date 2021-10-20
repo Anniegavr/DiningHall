@@ -1,8 +1,10 @@
 package main
+
 import (
-	"fmt"
-	"time"
+"fmt"
+"time"
 )
+var TimeUnit time.Duration
 
 type RatingSystem struct {
 	values []int

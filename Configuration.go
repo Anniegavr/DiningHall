@@ -1,6 +1,6 @@
 package main
 type Configuration struct {
-	DinnerHallAddr string `json:"dinner_hall_addr"`
+	LobbyAddr string `json:"lobby_addr"`
 	KitchenAddr    string `json:"kitchen_addr"`
 
 	DistributionRout string `json:"distribution_rout"`
@@ -21,4 +21,5 @@ type Configuration struct {
 	MaxPriority int `json:"max_priority"`
 
 	MaxWaitMultiplier float32 `json:"max_wait_multiplier"`
+	TimeUnitMillisecondMultiplier int `json:"time_unit_millisecond_multiplier"`
 }
