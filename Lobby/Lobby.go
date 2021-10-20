@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/Anniegavr/Lobby/Lobby/item"
+	"github.com/Anniegavr/Lobby/Lobby/utils"
 	"github.com/gorilla/mux"
 	"log"
 	"math/rand"
@@ -11,39 +13,23 @@ import (
 	"time"
 )
 
-type MenuItem struct {
-	Id               int    `json:"id"`
-	Name             string `json:"name"`
-	PreparationTime  int    `json:"preparation-time"`
-	Complexity       int    `json:"complexity"`
-	CookingApparatus string `json:"cooking-apparatus"`
-}
-type CookingDetails struct {
-	FoodId int `json:"food_id"`
-	CookId int `json:"cook_id"`
-}
 
-type Order struct {
-	OrderId  int   `json:"id"`
-	TableId  int   `json:"table_id"`
-	WaiterId int   `json:"table_id"`
-	Items    []int `json:"items"`
-	Priority int   `json:"priority"`
-	MaxWait  int   `json:"maxWait"`
-	PickTime int   `json:"pick_time"`
-}
+//type CookingDetails struct {
+//	FoodId int `json:"food_id"`
+//	CookId int `json:"cook_id"`
+//}
 
-type OrderDistribution struct {
-	OrderId        int              `json:"order_id"`
-	TableId        int              `json:"table_id"`
-	Waiter_id      int              `json:"waiter_id"`
-	Items          []int            `json:"items"`
-	Priority       int              `json:"priority"`
-	MaxWait        int              `json:"max_wait"`
-	PickUpTime     int              `json:"pick_up_time"`
-	CookingTime    int              `json:"cooking_time"`
-	CookingDetails []CookingDetails `json:"cooking_details"`
-}
+//type Order struct {
+//	OrderId  int   `json:"id"`
+//	TableId  int   `json:"table_id"`
+//	WaiterId int   `json:"table_id"`
+//	Items    []int `json:"items"`
+//	Priority int   `json:"priority"`
+//	MaxWait  int   `json:"maxWait"`
+//	PickTime int   `json:"pick_time"`
+//}
+
+
 
 //type TableIdCounter struct {
 //	id int
@@ -67,33 +53,12 @@ type OrderDistribution struct {
 //	return *idRef
 //}
 
-type Menu []MenuItem
-type OrdersList []Order
+type Menu []item.Item
+type OrdersList []utils.OrderData
 
 var orderIdentif = 0
 
-func sendOrder() {
-	orderIdentif++
-	items := []int{3, 4, 4, 5}
-	order := Order{
-		orderIdentif, 1, 1, items, 3, 45, 1631453140,
-	}
-	jsonData, err := json.Marshal(order)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	resp, err := http.Post("http://localhost:8082/orders", "application/json",
-		bytes.NewBuffer(jsonData))
-
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Print(time.Now().Clock())
-	fmt.Printf(": Order number %d placed. TableStatus: %d\n", orderIdentif, resp.StatusCode)
-}
-
+//var sendOrder SendOrder = new
 func generateOrder() {
 	i := 1
 	max := 10
@@ -101,7 +66,7 @@ func generateOrder() {
 		// wait for 3-10 seconds betwwen placing orders
 		preparation_time := rand.Intn(5)
 		time.Sleep(time.Duration(preparation_time) * time.Second)
-		sendOrder()
+		//sendOrder.SendOrder()
 		i += 1
 	}
 }
@@ -109,22 +74,12 @@ func generateOrder() {
 type orders []int                                      //a list of orders
 func indexPage(w http.ResponseWriter, r *http.Request) {}
 
-func postDishes(w http.ResponseWriter, r *http.Request) {
-	var prepared OrderDistribution
-	err := json.NewDecoder(r.Body).Decode(&prepared)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
 
-	fmt.Print(time.Now().Clock())
-	fmt.Printf(": Dishes received. Order id: %d\n", prepared.OrderId)
-}
 
 func handleRequests() {
 	myRouter := mux.NewRouter().StrictSlash(true)
 	myRouter.HandleFunc("/", indexPage)
-	myRouter.HandleFunc("/distribution", postDishes).Methods("POST")
+	myRouter.HandleFunc("/distribution", SendRequest()).Methods("POST")
 	log.Fatal(http.ListenAndServe(":8083", myRouter))
 }
 
