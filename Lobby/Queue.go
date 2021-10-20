@@ -6,7 +6,7 @@ type Queue struct {
 	list *list.List
 }
 
-func New() *Queue {
+func NewQueue() *Queue {
 	return &Queue{
 		list: list.New(),
 	}
