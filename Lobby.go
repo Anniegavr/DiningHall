@@ -2,11 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/Anniegavr/Lobby/Lobby/item"
-	"github.com/Anniegavr/Lobby/Lobby/utils"
+	"github.com/Anniegavr/Lobby/Lobby/models"
+	item2 "github.com/Anniegavr/Lobby/Lobby/models/item"
 	"io"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 	"time"
@@ -52,8 +51,8 @@ import (
 //	return *idRef
 //}
 
-type Menu []item.Item
-type OrdersList []utils.OrderData
+//type Menu []item2.Item
+//type OrdersList []models.OrderData
 //type Conf struct {
 //	LobbyAddr                string  `json:"lobby_addr"`
 //	KitchenAddr                   string  `json:"kitchen_addr"`
@@ -76,20 +75,20 @@ const (
 )
 
 //var sendOrder SendOrder = new
-func generateOrder() {
-	i := 1
-	max := 10
-	for i <= max {
-		// wait for 3-10 seconds betwwen placing orders
-		preparation_time := rand.Intn(5)
-		time.Sleep(time.Duration(preparation_time) * time.Second)
-		//sendOrder.SendOrder()
-		i += 1
-	}
-}
+//func generateOrder() {
+//	i := 1
+//	max := 10
+//	for i <= max {
+//		// wait for 3-10 seconds betwwen placing orders
+//		preparationTime := rand.Intn(5)
+//		time.Sleep(time.Duration(preparationTime) * time.Second)
+//		//sendOrder.SendOrder()
+//		i += 1
+//	}
+//}
 
-type orders []int                                      //a list of orders
-func indexPage(w http.ResponseWriter, r *http.Request) {}
+//type orders []int                                      //a list of orders
+//func indexPage(w http.ResponseWriter, r *http.Request) {}
 
 
 
@@ -100,8 +99,8 @@ func indexPage(w http.ResponseWriter, r *http.Request) {}
 //	log.Fatal(http.ListenAndServe(":8083", myRouter))
 //}
 
-func GetItemContainer() *item.Container {
-	var itemList []item.Item
+func GetItemContainer() *item2.Container {
+	var itemList []item2.Item
 
 	itemListFile, _ := os.Open(ItemsPath)
 	defer func(itemListFile *os.File) {
@@ -120,17 +119,17 @@ func GetItemContainer() *item.Container {
 		return nil
 	}
 
-	return item.NewContainer(itemList)
+	return item2.NewContainer(itemList)
 }
 
 func main() {
 	conf := GetConf()
 	container := GetItemContainer()
 
-	rate := NewRatingSystem()
+	rate := models.NewRatingSystem()
 
 	timeUnitMillisecondMultiplier := time.Duration(conf.TimeUnitMillisecondMultiplier)
-	TimeUnit = time.Millisecond * timeUnitMillisecondMultiplier
+	models.TimeUnit = time.Millisecond * timeUnitMillisecondMultiplier
 
 	manager := NewTableIdCounter()
 

@@ -3,14 +3,14 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Anniegavr/Lobby/Lobby/utils"
+	"github.com/Anniegavr/Lobby/Lobby/models"
 )
 
 const (
 	HttpAddr = "http://"
 )
 
-func SendOrder(order *utils.OrderData, conf *Configuration) {
+func SendOrder(order *models.OrderData, conf *Configuration) {
 	//orderIdentif++
 	//	items := []int{3, 4, 4, 5}
 	//	order := Order{

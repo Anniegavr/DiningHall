@@ -3,7 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/Anniegavr/Lobby/Lobby/item"
+	"github.com/Anniegavr/Lobby/Lobby/models"
+	"github.com/Anniegavr/Lobby/Lobby/models/item"
 	"github.com/Anniegavr/Lobby/Lobby/utils"
 	"math/rand"
 	"sync"
@@ -28,7 +29,7 @@ type Table struct {
 	manager *TableIdCounter
 	menu    *item.Container
 	conf    *Configuration
-	rate *RatingSystem
+	rate *models.RatingSystem
 }
 func NewTable(
 	id int,
@@ -76,7 +77,7 @@ func (table *Table) StartOrdering() error {
 	return nil
 }
 
-func (table *Table) FinishOrdering(waiterId int) (*utils.OrderData, error) {
+func (table *Table) FinishOrdering(waiterId int) (*models.OrderData, error) {
 	priority := table.getPriority()
 	count := table.getOrderCount()
 
@@ -100,10 +101,10 @@ func (table *Table) FinishOrdering(waiterId int) (*utils.OrderData, error) {
 	finalMaxWait := float32(maxWait) * table.conf.MaxWaitMultiplier
 	pickUpTime := time.Now().Unix()
 
-	order := &utils.OrderData{
-		OrderID:    table.manager.Get(),
-		TableID:    table.id,
-		WaiterID:   waiterId,
+	order := &models.OrderData{
+		OrderId:    table.manager.Get(),
+		TableId:    table.id,
+		WaiterId:   waiterId,
 		Items:      items,
 		Priority:   priority,
 		MaxWait:    finalMaxWait,
@@ -118,7 +119,7 @@ func (table *Table) GetOrder(dist *utils.DistributionData) {
 	<-table.orderStatus
 
 	now := time.Now().Unix()
-	rating := Calculate(dist.PickUpTime, now, dist.MaxWait)
+	rating := models.Calculate(dist.PickUpTime, now, dist.MaxWait)
 
 	fmt.Printf("%s = %d\n", "Rating order", rating)
 
@@ -127,7 +128,7 @@ func (table *Table) GetOrder(dist *utils.DistributionData) {
 	fmt.Printf("%s = %f\n", "Rating overall", table.rate.Return())
 }
 
-func (table *Table) SetRatingSystem(rate *RatingSystem) {
+func (table *Table) SetRatingSystem(rate *models.RatingSystem) {
 	table.rate = rate
 }
 
@@ -138,7 +139,7 @@ func (table *Table) update() {
 
 func (table *Table) free() {
 	table.status = FreeForClients
-	time.Sleep(TimeUnit)
+	time.Sleep(models.TimeUnit)
 }
 
 func (table *Table) makingOrder() {

@@ -20,7 +20,7 @@ func SendRequest(addr string, body []byte) {
 	//}
 	//
 	//fmt.Print(time.Now().Clock())
-	//fmt.Printf(": Dishes received. Order id: %d\n", prepared.OrderID)
+	//fmt.Printf(": Dishes received. Order id: %d\n", prepared.OrderId)
 	request, err := http.NewRequest(method, addr, bytes.NewBuffer(body))
 	if err != nil {
 		log.Fatalf("exit: %s\n", err.Error())

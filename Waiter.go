@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/Anniegavr/Lobby/Lobby/models"
 	"github.com/Anniegavr/Lobby/Lobby/utils"
 
 	//"Table.go"
@@ -21,7 +22,7 @@ const (
 type Waiter struct {
 	id int
 	assignedTables []*Table
-	queue          *Queue
+	queue          *models.Queue
 	//status chan bool
 	conf *Configuration
 }
@@ -30,7 +31,7 @@ func NewWaiter(id int, conf *Configuration) *Waiter {
 	return &Waiter{
 		id:    id,
 		conf:  conf,
-		queue: NewQueue(),
+		queue: models.NewQueue(),
 	}
 }
 
@@ -91,7 +92,7 @@ func (waiter *Waiter) update() {
 			timeToMakeOrder := Range(waiter.conf.MinMakeOrder, waiter.conf.MaxMakeOrder)
 			durationToMakeOrder := time.Duration(timeToMakeOrder)
 			//time.Sleep(configuration.TimeUnit * durationToMakeOrder)
-			time.Sleep(TimeUnit * durationToMakeOrder)
+			time.Sleep(models.TimeUnit * durationToMakeOrder)
 
 			order, err := tab.FinishOrdering(waiter.id)
 			if err != nil {
