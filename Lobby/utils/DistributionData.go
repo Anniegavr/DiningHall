@@ -16,9 +16,9 @@ type DistributionData struct {
 func (data DistributionData) String() string {
 	var result string
 
-	result += fmt.Sprintln("OrderID = ", data.OrderID)
-	result += fmt.Sprintln("TableID = ", data.TableID)
-	result += fmt.Sprintln("WaiterID = ", data.WaiterID)
+	result += fmt.Sprintln("OrderId = ", data.OrderID)
+	result += fmt.Sprintln("TableId = ", data.TableID)
+	result += fmt.Sprintln("WaiterId = ", data.WaiterID)
 	result += fmt.Sprintln("Items = ", data.Items)
 	result += fmt.Sprintln("Priority = ", data.Priority)
 	result += fmt.Sprintln("MaxWait = ", data.MaxWait)
